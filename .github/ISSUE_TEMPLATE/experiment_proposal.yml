@@ -15,83 +15,29 @@ body:
       placeholder: "e.g., Multi-Agent Coordination Test"
     validations:
       required: true
+  - type: input
+    id: jira-ticket
+    attributes:
+      label: Associated Jira Ticket
+      description: Link to the Jira ticket for this experiment
+      placeholder: "https://yourdomain.atlassian.net/browse/TICKET-123"
+    validations:
+      required: true
   - type: dropdown
     id: category
     attributes:
       label: Experiment Category
       description: What type of experiment is this?
       options:
-        - Multi-Agent Systems
-        - Web Automation  
-        - Workflow Orchestration
-        - Tool Integration
-        - Performance Testing
+        - AI Proof of Concept
+        - Web Automation
         - Other (specify in description)
     validations:
       required: true
   - type: textarea
-    id: hypothesis
+    id: description
     attributes:
-      label: Hypothesis
-      description: What are you trying to test or prove with this experiment?
-      placeholder: "I believe that... because... and this will be demonstrated by..."
+      label: Description
+      description: What does this experiment do and why is it useful?
     validations:
       required: true
-  - type: textarea
-    id: methodology
-    attributes:
-      label: Methodology
-      description: How will you conduct this experiment? What steps will be involved?
-    validations:
-      required: true
-  - type: dropdown
-    id: complexity
-    attributes:
-      label: Experiment Complexity
-      description: How complex do you estimate this experiment to be?
-      options:
-        - Simple (1-2 days)
-        - Medium (1 week)
-        - Complex (2+ weeks)
-    validations:
-      required: true
-  - type: dropdown
-    id: project
-    attributes:
-      label: Where should this experiment be implemented?
-      description: Choose the best location for this experiment
-      options:
-        - mastra-test-app (existing project)
-        - New directory in this repo
-        - New standalone repository
-        - External integration
-    validations:
-      required: true
-  - type: checkboxes
-    id: requirements
-    attributes:
-      label: Requirements
-      description: What will this experiment need?
-      options:
-        - label: New dependencies
-        - label: External APIs
-        - label: Database setup
-        - label: Browser automation
-        - label: Machine learning models
-        - label: Multi-agent setup
-        - label: Performance monitoring
-        - label: Data storage/analysis
-  - type: textarea
-    id: expected-outcomes
-    attributes:
-      label: Expected Outcomes
-      description: What results do you expect from this experiment?
-    validations:
-      required: true
-  - type: textarea
-    id: success-criteria
-    attributes:
-      label: Success Criteria
-      description: How will you measure if the experiment was successful?
-    validations:
-      required: true 
