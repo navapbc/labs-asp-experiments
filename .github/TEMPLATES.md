@@ -1,4 +1,4 @@
-# GitHub Configuration
+# GitHub Templates & Workflows
 
 This directory contains GitHub-specific configuration files for the labs-asp-experiments repository.
 
