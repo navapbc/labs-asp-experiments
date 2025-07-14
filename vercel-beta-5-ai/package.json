@@ -1,0 +1,43 @@
+{
+  "name": "ai-app-ver-5",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "2.0.0-beta.7",
+    "@ai-sdk/react": "2.0.0-beta.17",
+    "@heroicons/react": "^2.2.0",
+    "@neondatabase/serverless": "^1.0.1",
+    "ai": "5.0.0-beta.17",
+    "dotenv": "^17.2.0",
+    "drizzle-kit": "^0.31.4",
+    "drizzle-orm": "^0.44.2",
+    "framer-motion": "^12.23.5",
+    "neondatabase": "0.0.1-security",
+    "next": "15.3.5",
+    "pg": "^8.16.3",
+    "postgres": "^3.4.7",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "sonner": "^2.0.6",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/node": "^20.19.7",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "eslint": "^9.31.0",
+    "eslint-config-next": "15.3.5",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.8.3"
+  }
+}
