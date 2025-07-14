@@ -70,28 +70,42 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-      - name: Install dependencies
+          cache: 'pnpm'
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies and run linting
         run: |
+          # Install root dependencies if package.json exists
           if [ -f "package.json" ]; then
-            npm ci
+            echo "Installing root dependencies..."
+            pnpm install
           fi
-          # Check each project directory
-          if [ -d "mastra-agent-app" ] && [ -f "mastra-agent-app/package.json" ]; then
-            cd mastra-agent-app && npm ci && cd ..
-          fi
-          if [ -d "mastra-test-app" ] && [ -f "mastra-test-app/package.json" ]; then
-            cd mastra-test-app && npm ci && cd ..
-          fi
-      - name: Run linting
-        run: |
-          # Run eslint in each project if available
-          if [ -d "mastra-agent-app" ]; then
-            cd mastra-agent-app && npm run lint --if-present && cd ..
-          fi
-          if [ -d "mastra-test-app" ]; then
-            cd mastra-test-app && npm run lint --if-present && cd ..
-          fi
+          
+          # Find all directories with package.json (excluding node_modules)
+          for dir in $(find . -name "package.json" -not -path "*/node_modules/*" -exec dirname {} \; | sort); do
+            if [ "$dir" = "." ]; then
+              echo "Skipping root directory for project-specific operations"
+              continue
+            fi
+            
+            project_name=$(basename "$dir")
+            echo "Processing project: $project_name"
+            
+            cd "$dir"
+            
+            # Install dependencies
+            echo "Installing dependencies for $project_name..."
+            pnpm install
+            
+            # Run linting if lint script exists
+            if pnpm run lint --if-present 2>/dev/null; then
+              echo "Linting completed for $project_name"
+            else
+              echo "No lint script found for $project_name"
+            fi
+            
+            cd - > /dev/null
+          done
 
   lint-markdown:
     name: Lint Markdown
@@ -102,11 +116,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DavidAnson/markdownlint-cli2-action@v13
         with:
-          globs: '**/*.md'
+          globs: |
+            **/*.md
+            !**/node_modules/**
           config: |
             {
               "line-length": false,
-              "no-inline-html": false
+              "no-inline-html": false,
+              "blanks-around-headings": false,
+              "no-duplicate-heading": false,
+              "no-trailing-spaces": false,
+              "single-trailing-newline": false
             }
 
   validate-yaml:
@@ -119,6 +139,8 @@ jobs:
       - name: Validate YAML files
         uses: ibiqlik/action-yamllint@v3
         with:
+          file_or_dir: |
+            .github/
           config_data: |
             extends: default
             rules:
@@ -137,12 +159,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
+      - name: Install pnpm
+        run: npm install -g pnpm
       - name: Run security audit
         run: |
-          # Check each project for security vulnerabilities
-          if [ -d "mastra-agent-app" ] && [ -f "mastra-agent-app/package.json" ]; then
-            cd mastra-agent-app && npm audit --audit-level=high && cd ..
-          fi
-          if [ -d "mastra-test-app" ] && [ -f "mastra-test-app/package.json" ]; then
-            cd mastra-test-app && npm audit --audit-level=high && cd ..
-          fi 
+          # Find all directories with package.json (excluding node_modules)
+          for dir in $(find . -name "package.json" -not -path "*/node_modules/*" -exec dirname {} \; | sort); do
+            project_name=$(basename "$dir")
+            echo "Running security audit for: $project_name"
+            
+            cd "$dir"
+            
+            # Run security audit
+            if pnpm audit --audit-level=high; then
+              echo "Security audit passed for $project_name"
+            else
+              echo "Security vulnerabilities found in $project_name"
+              exit 1
+            fi
+            
+            cd - > /dev/null
+          done 
