@@ -15,6 +15,20 @@ body:
       placeholder: "e.g., Multi-Agent Coordination Test"
     validations:
       required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Experiment Category
+      description: What type of experiment is this?
+      options:
+        - Multi-Agent Systems
+        - Web Automation  
+        - Workflow Orchestration
+        - Tool Integration
+        - Performance Testing
+        - Other (specify in description)
+    validations:
+      required: true
   - type: textarea
     id: hypothesis
     attributes:
@@ -41,6 +55,18 @@ body:
         - Complex (2+ weeks)
     validations:
       required: true
+  - type: dropdown
+    id: project
+    attributes:
+      label: Where should this experiment be implemented?
+      description: Choose the best location for this experiment
+      options:
+        - mastra-test-app (existing project)
+        - New directory in this repo
+        - New standalone repository
+        - External integration
+    validations:
+      required: true
   - type: checkboxes
     id: requirements
     attributes:
@@ -53,6 +79,8 @@ body:
         - label: Browser automation
         - label: Machine learning models
         - label: Multi-agent setup
+        - label: Performance monitoring
+        - label: Data storage/analysis
   - type: textarea
     id: expected-outcomes
     attributes:
