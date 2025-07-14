@@ -6,6 +6,7 @@ This repository contains experiments involved with setting up experiments for th
 ## Current Projects
 
 - `mastra-test-app/` - Testing environment for Mastra workflows and agents
+- `vercel-beta-5-ai` - Testing environment for Vercel beta 5 SDK AI with Neon DB
 - `add-your-project-here/` - Include a short description of your project here
 
 ## Filing Experiments
