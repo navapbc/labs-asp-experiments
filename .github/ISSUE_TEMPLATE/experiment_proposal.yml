@@ -1,0 +1,69 @@
+name: Experiment Proposal
+description: Propose a new experiment for the Agentic Submission Project
+title: "[EXPERIMENT]: "
+labels: ["experiment", "proposal", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Propose a new experiment for our ASP research!
+  - type: input
+    id: experiment-name
+    attributes:
+      label: Experiment Name
+      description: A clear, descriptive name for the experiment
+      placeholder: "e.g., Multi-Agent Coordination Test"
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      description: What are you trying to test or prove with this experiment?
+      placeholder: "I believe that... because... and this will be demonstrated by..."
+    validations:
+      required: true
+  - type: textarea
+    id: methodology
+    attributes:
+      label: Methodology
+      description: How will you conduct this experiment? What steps will be involved?
+    validations:
+      required: true
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Experiment Complexity
+      description: How complex do you estimate this experiment to be?
+      options:
+        - Simple (1-2 days)
+        - Medium (1 week)
+        - Complex (2+ weeks)
+    validations:
+      required: true
+  - type: checkboxes
+    id: requirements
+    attributes:
+      label: Requirements
+      description: What will this experiment need?
+      options:
+        - label: New dependencies
+        - label: External APIs
+        - label: Database setup
+        - label: Browser automation
+        - label: Machine learning models
+        - label: Multi-agent setup
+  - type: textarea
+    id: expected-outcomes
+    attributes:
+      label: Expected Outcomes
+      description: What results do you expect from this experiment?
+    validations:
+      required: true
+  - type: textarea
+    id: success-criteria
+    attributes:
+      label: Success Criteria
+      description: How will you measure if the experiment was successful?
+    validations:
+      required: true 
