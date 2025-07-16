@@ -73,7 +73,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'pnpm'
       - name: Install dependencies and run linting
         run: |
           # Install root dependencies if package.json exists
@@ -165,7 +164,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'pnpm'
       - name: Run security audit
         run: |
           # Find all directories with package.json (excluding node_modules)
