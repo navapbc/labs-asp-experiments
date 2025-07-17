@@ -4,9 +4,13 @@
 
 Creat an `.env.local` file in your project root and add your OpenAI API Key
 
-`touch .env.local`
+```bash
+touch .env.local
+```
 
-`OPENAI_API_KEY=xxxxxxxxx`
+```javascript
+OPENAI_API_KEY=xxxxxxxxx
+```
 
 ### Set up for Neon DB
 
