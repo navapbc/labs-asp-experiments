@@ -1,12 +1,12 @@
 # Labs ASP Experiments
 
-This repository contains experiments involved with setting up experiments for the 
+This repository contains experiments involved with setting up experiments for the
 **Agentic Submission Project (ASP)**.
 
 ## Current Projects
 
 - `mastra-test-app/` - Testing environment for Mastra workflows and agents
-- `vercel-beta-5-ai` - Testing environment for Vercel beta 5 SDK AI with Neon DB
+- `vercel-beta-5-ai/` - Testing environment for Vercel beta 5 SDK AI with Neon DB
 - `add-your-project-here/` - Include a short description of your project here
 
 ## Filing Experiments
