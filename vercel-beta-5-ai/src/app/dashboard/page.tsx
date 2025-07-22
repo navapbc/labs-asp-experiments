@@ -1,13 +1,13 @@
 import Chat from "../components/Chat";
-import ChatObject from "../components/ChatObject";
+import DashboardMain from "../components/DashboardMain";
 
 export default function DashboardPage() {
-    return (
-        <div>
-            <div className="flex items-center justify-between mb-8">
-                <h1 className="text-2xl font-bold">Dashboard</h1>
-            </div>
-            <ChatObject />
-        </div>
-    );
+  return (
+    <div className="flex h-[calc(100vh-4rem)] pt-16 bg-gray-50 dark:bg-zinc-900">
+      <Chat />
+      <div className="flex-1 h-full">
+        <DashboardMain />
+      </div>
+    </div>
+  );
 }
