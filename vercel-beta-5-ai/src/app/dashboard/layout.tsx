@@ -8,8 +8,8 @@ export default function DashboardLayout({ children } :{ children: React.ReactNod
                 {/* This is where the navigation component will be rendered */}
                 <Navigation />
             </Suspense>
-            <main className="pl-16 md:pl-64 pt-0 min-h-screen">
-                <div className="max-w-6xl mx-auto p-4 md:p-8">
+            <main >
+                <div>
                     <div>{children}</div>
                 </div>
             </main>
