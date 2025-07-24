@@ -19,6 +19,7 @@ const navigationStep = createStep({
   outputSchema: z.object({
     url: z.string(),
     objective: z.string(),
+    sessionThreadId: z.string().describe('Thread ID for memory continuity across workflow steps'),
     pageAnalysis: z.string().describe('Analysis of the current page'),
     availableActions: z.array(z.string()).describe('List of possible actions identified on the page'),
   }),
@@ -33,6 +34,9 @@ const navigationStep = createStep({
     }
 
     logger.info(`Starting navigation to URL: ${inputData.url} with objective: ${inputData.objective}`);
+
+    // Create a consistent thread ID for this workflow session
+    const sessionThreadId = `web-automation-${inputData.url.replace(/[^a-zA-Z0-9]/g, '-')}-${Date.now()}`;
 
     const prompt = `Navigate to ${inputData.url} and analyze the page for automation opportunities.
 
@@ -52,7 +56,10 @@ const navigationStep = createStep({
         role: 'user',
         content: prompt,
       },
-    ]);
+    ], {
+      resourceId: 'web-automation-user',
+      threadId: sessionThreadId,
+    });
 
     let analysisText = '';
     for await (const chunk of response.textStream) {
@@ -74,6 +81,7 @@ const navigationStep = createStep({
     return {
       url: inputData.url,
       objective: inputData.objective,
+      sessionThreadId,
       pageAnalysis: analysisText,
       availableActions,
     };
@@ -87,12 +95,14 @@ const actionPlanningStep = createStep({
   inputSchema: z.object({
     url: z.string(),
     objective: z.string(),
+    sessionThreadId: z.string(),
     pageAnalysis: z.string(),
     availableActions: z.array(z.string()),
   }),
   outputSchema: z.object({
     url: z.string(),
     objective: z.string(),
+    sessionThreadId: z.string(),
     selectedAction: z.string().describe('The action selected by the agent or user'),
     actionDetails: z.string().describe('Additional details for the action'),
   }),
@@ -110,6 +120,7 @@ const actionPlanningStep = createStep({
       return {
         url: inputData?.url || '',
         objective: inputData?.objective || '',
+        sessionThreadId: inputData?.sessionThreadId || '',
         selectedAction: resumeData.selectedAction,
         actionDetails: resumeData.actionDetails,
       };
@@ -144,7 +155,10 @@ const actionPlanningStep = createStep({
         role: 'user',
         content: prompt,
       },
-    ]);
+    ], {
+      resourceId: 'web-automation-user',
+      threadId: inputData?.sessionThreadId || 'web-automation-fallback',
+    });
 
     let decisionText = '';
     for await (const chunk of response.textStream) {
@@ -167,6 +181,7 @@ const actionPlanningStep = createStep({
       return {
         url: inputData?.url || '',
         objective: inputData?.objective || '',
+        sessionThreadId: inputData?.sessionThreadId || '',
         selectedAction,
         actionDetails,
       };
@@ -189,6 +204,7 @@ const actionExecutionStep = createStep({
   inputSchema: z.object({
     url: z.string(),
     objective: z.string(),
+    sessionThreadId: z.string(),
     selectedAction: z.string(),
     actionDetails: z.string(),
   }),
@@ -233,7 +249,10 @@ const actionExecutionStep = createStep({
         role: 'user',
         content: prompt,
       },
-    ]);
+    ], {
+      resourceId: 'web-automation-user',
+      threadId: inputData.sessionThreadId,
+    });
 
     let actionResult = '';
     for await (const chunk of response.textStream) {
