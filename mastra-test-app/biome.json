@@ -1,0 +1,95 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"includes": [
+			"**",
+			"!**/public/**",
+			"!**/mastra.db",
+			"!**/mastra.db-shm",
+			"!**/mastra.db-wal",
+			"!node_modules",
+			"!.github",
+			"!.vercel",
+			"!pnpm-lock.yaml"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "space",
+		"lineEnding": "lf",
+		"indentWidth": 2,
+		"lineWidth": 80
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"noExplicitAny": "warn",
+				"noArrayIndexKey": "warn",
+				"noConsole": "off",
+				"noDebugger": "error",
+				"noEmptyBlockStatements": "error",
+				"noGlobalAssign": "error",
+				"noVar": "error"
+			},
+			"correctness": {
+				"noUnusedVariables": "warn",
+				"useExhaustiveDependencies": "warn",
+				"noUnknownMediaFeatureName": "off",
+				"useHookAtTopLevel": "error",
+				"noUndeclaredVariables": "error"
+			},
+			"style": {
+				"noNonNullAssertion": "off",
+				"noUnusedTemplateLiteral": "off",
+				"useConst": "error",
+				"useExponentiationOperator": "error",
+				"useTemplate": "warn",
+				"useShorthandFunctionType": "warn",
+				"useNamingConvention": "warn",
+				"useNodejsImportProtocol": "warn"
+			},
+			"complexity": {
+				"noExcessiveCognitiveComplexity": "warn",
+				"noForEach": "off",
+				"useFlatMap": "warn",
+				"useOptionalChain": "warn"
+			},
+			"security": {
+				"noGlobalEval": "error"
+			},
+			"a11y": {
+				"useKeyWithClickEvents": "warn",
+				"useValidAnchor": "warn"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"semicolons": "asNeeded",
+			"trailingCommas": "es5"
+		}
+	},
+	"json": {
+		"parser": {
+			"allowTrailingCommas": true,
+			"allowComments": true
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	}
+}

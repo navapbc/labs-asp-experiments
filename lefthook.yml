@@ -1,0 +1,21 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint-and-format:
+      glob: "*.{js,ts,jsx,tsx,json,md}"
+      run: pnpm exec biome check --write {staged_files}
+      stage_fixed: true
+    
+    check-types:
+      glob: "*.{ts,tsx}"
+      run: pnpm exec tsc --noEmit
+
+post-merge:
+  commands:
+    update-env:
+      run: pnpm dlx vercel env pull
+    install-deps:
+      run: pnpm i
+    show-changes:
+      run: |
+        git log --oneline -10 --graph --decorate --color=always
