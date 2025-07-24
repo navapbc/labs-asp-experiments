@@ -8,7 +8,7 @@
 	"files": {
 		"ignoreUnknown": false,
 		"includes": [
-			"**",
+			"mastra-test-app/**/*",
 			"!**/public/**",
 			"!**/mastra.db",
 			"!**/mastra.db-shm",

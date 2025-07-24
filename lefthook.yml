@@ -1,21 +1,28 @@
+# Lefthook configuration for git hooks
+# Fast and powerful Git hooks manager
+# Documentation: https://github.com/evilmartians/lefthook
+
+# Configure the source directory for lefthook binary
+source_dir: mastra-test-app
+
 pre-commit:
   parallel: true
   commands:
     lint-and-format:
-      glob: "*.{js,ts,jsx,tsx,json,md}"
-      run: pnpm exec biome check --write {staged_files}
+      glob: "mastra-test-app/**/*.{js,ts,jsx,tsx,json,md}"
+      run: pnpm --dir mastra-test-app exec biome check --write {staged_files}
       stage_fixed: true
     
     check-types:
-      glob: "*.{ts,tsx}"
-      run: pnpm exec tsc --noEmit
+      glob: "mastra-test-app/**/*.{ts,tsx}"
+      run: pnpm --dir mastra-test-app exec tsc --noEmit
 
 post-merge:
   commands:
     update-env:
       run: pnpm dlx vercel env pull
     install-deps:
-      run: pnpm i
+      run: cd mastra-test-app && pnpm install
     show-changes:
       run: |
         git log --oneline -10 --graph --decorate --color=always
