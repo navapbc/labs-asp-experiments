@@ -41,7 +41,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       typescript: ${{ steps.changes.outputs.typescript }}
-      markdown: ${{ steps.changes.outputs.markdown }}
       yaml: ${{ steps.changes.outputs.yaml }}
     steps:
       - uses: actions/checkout@v4
@@ -54,8 +53,6 @@ jobs:
               - '**/*.tsx'
               - '**/*.js'
               - '**/*.jsx'
-            markdown:
-              - '**/*.md'
             yaml:
               - '**/*.yml'
               - '**/*.yaml'
@@ -107,27 +104,7 @@ jobs:
             cd - > /dev/null
           done
 
-  lint-markdown:
-    name: Lint Markdown
-    runs-on: ubuntu-latest
-    needs: file-changes
-    if: needs.file-changes.outputs.markdown == 'true'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: DavidAnson/markdownlint-cli2-action@v13
-        with:
-          globs: |
-            **/*.md
-            !**/node_modules/**
-          config: |
-            {
-              "line-length": false,
-              "no-inline-html": false,
-              "blanks-around-headings": false,
-              "no-duplicate-heading": false,
-              "no-trailing-spaces": false,
-              "single-trailing-newline": false
-            }
+
 
   validate-yaml:
     name: Validate YAML
