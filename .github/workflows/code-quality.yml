@@ -104,8 +104,6 @@ jobs:
             cd - > /dev/null
           done
 
-
-
   validate-yaml:
     name: Validate YAML
     runs-on: ubuntu-latest
