@@ -193,3 +193,7 @@ Thumbs.db
 
 # FuseBox cache
 .fusebox/ 
+
+# Mastra database files
+*.db
+*.db-*
