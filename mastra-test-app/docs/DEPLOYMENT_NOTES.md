@@ -6,7 +6,7 @@ This guide provides an exact, copy‑pasteable sequence to deploy `mastra-test-a
 - Google Cloud project with billing enabled
 - `gcloud` CLI installed and authenticated
 - API keys: OpenAI, Anthropic, Exa
-- PostgreSQL connection URL (Neon or other)
+- PostgreSQL connection URL (currently Neon)
 
 ---
 
@@ -72,7 +72,7 @@ NODE_ENV=production
 EOF
 ```
 
-### 6) Build and (optionally) apply migrations
+### 7) Build and (optionally) apply migrations
 ```bash
 # Build the app and prepare Prisma client in the output
 pnpm build
@@ -81,9 +81,9 @@ pnpm build
 npx prisma migrate deploy
 ```
 
-### 7) Start the application
+### 8) Start the application
 ```bash
-pnpm start
+pnpm dev
 ```
 
 The server listens on `0.0.0.0:4111`. In another terminal:
@@ -92,13 +92,6 @@ EXTERNAL_IP=$(gcloud compute instances describe mastra-app \
   --zone=us-west1-a \
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 echo "http://$EXTERNAL_IP:4111/auth/login"
-```
-
-Optional: keep it running with PM2
-```bash
-sudo npm install -g pm2
-pm2 start "pnpm start" --name mastra-app
-pm2 startup && pm2 save
 ```
 
 ---
@@ -111,4 +104,4 @@ pm2 startup && pm2 save
 ### Troubleshooting
 - Prisma client errors: ensure you ran `pnpm build`. If needed, run `npx prisma generate` once, then `pnpm build` again.
 - Firewall: verify with `gcloud compute firewall-rules list --filter="name~allow-mastra-app"`.
-- Logs: if using PM2, run `pm2 logs mastra-app`; otherwise, observe terminal output from `pnpm start`.
+- Logs: if using PM2, run `pm2 logs mastra-app`; otherwise, observe terminal output from `pnpm dev`.

@@ -8,7 +8,6 @@ import { databaseTools } from '../tools/database-tools';
 import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
 
-const base = process.env.DB_BASE || "../";
 // Path is relative to .mastra/output/ when bundled
 const storage = new LibSQLStore({
   url: "file:../mastra.db",
@@ -27,7 +26,7 @@ const memory = new Memory({
     lastMessages: 10,
     workingMemory: { 
       enabled: true,
-      scope: 'resource',
+      scope: 'thread',
       template: `
         - **Name**
         - **Description**
@@ -97,6 +96,17 @@ export const webAutomationAgent = new Agent({
     - Skip disabled/grayed-out fields with a note
     - Do not fill optional fields unless specified
     - Submit only when all required fields are complete
+
+    **Screenshot Protocol:**
+    - Take a screenshot after completing all fields on a page 
+    - Use fullPage: true to capture the complete viewport including off-screen content
+    - Do NOT take screenshots for individual form interactions
+    - NEVER specify a filename parameter - let the system auto-generate timestamps
+    
+    Example screenshot tool call:
+    browser_take_screenshot({
+      fullPage: true
+    })
 
     **Autonomous Progression:**
     PROCEED AUTOMATICALLY for:
