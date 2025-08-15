@@ -1,9 +1,14 @@
-import { postgresStore, pgVector } from '../storage';
+import {
+  createAnswerRelevancyScorer,
+  createToxicityScorer
+} from "@mastra/evals/scorers/llm";
 import { exaMCP, playwrightMCP } from '../mcp';
+import { pgVector, postgresStore } from '../storage';
 
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { anthropic } from '@ai-sdk/anthropic';
+import { createToolHallucinationScorer } from '../scorers/toolHallucination';
 import { databaseTools } from '../tools/database-tools';
 import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
@@ -148,6 +153,22 @@ export const webAutomationAgent = new Agent({
     )
   },
   memory: memory,
+  scorers: {
+    relevancy: {
+      scorer: createAnswerRelevancyScorer({ model: google("gemini-2.5-pro") }),
+      sampling: { type: "ratio", rate: 0.5 }
+    },
+    safety: {
+      scorer: createToxicityScorer({ model: google("gemini-2.5-pro") }),
+      sampling: { type: "ratio", rate: 1 }
+    },
+    hallucination: {
+      scorer: createToolHallucinationScorer({
+        model: google("gemini-2.5-pro"),
+      }),
+      sampling: { rate: 1, type: "ratio" },
+    },
+  },
   defaultStreamOptions: {
     maxSteps: 50,
     maxRetries: 3,
