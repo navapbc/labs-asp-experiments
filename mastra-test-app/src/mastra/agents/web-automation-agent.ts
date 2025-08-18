@@ -1,9 +1,14 @@
-import { postgresStore, pgVector } from '../storage';
+import {
+  createAnswerRelevancyScorer,
+  createToxicityScorer
+} from "@mastra/evals/scorers/llm";
 import { exaMCP, playwrightMCP } from '../mcp';
+import { pgVector, postgresStore } from '../storage';
 
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { anthropic } from '@ai-sdk/anthropic';
+import { createLanguagePreferenceScorer } from "../scorers/languagePreference";
 import { databaseTools } from '../tools/database-tools';
 import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
@@ -76,7 +81,7 @@ export const webAutomationAgent = new Agent({
     **Web Navigation:**
     - Navigate to websites and analyze page structure
     - If participant has a preferred language, immediately look for and change the website language
-    - Common language selectors: language dropdowns, flag icons, "EN" buttons, or language preference settings
+    - Common language selectors: "Select Language" dropdowns, flag icons, buttons that say "EN" or "SP", or language preference settings
     - Identify and interact with elements (buttons, forms, links, dropdowns)
 
     When performing actions:
@@ -150,6 +155,22 @@ export const webAutomationAgent = new Agent({
     )
   },
   memory: memory,
+  scorers: {
+    relevancy: {
+      scorer: createAnswerRelevancyScorer({ model: google("gemini-2.5-pro") }),
+      sampling: { type: "ratio", rate: 0.5 }
+    },
+    safety: {
+      scorer: createToxicityScorer({ model: google("gemini-2.5-pro") }),
+      sampling: { type: "ratio", rate: 1 }
+    },
+    languagePreference: {
+      scorer: createLanguagePreferenceScorer({
+        model: google("gemini-2.5-pro"),
+      }),
+      sampling: { rate: 1, type: "ratio" },
+    },
+  },
   defaultStreamOptions: {
     maxSteps: 50,
     maxRetries: 3,
